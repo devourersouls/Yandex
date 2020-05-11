@@ -63,6 +63,22 @@ class Provider extends AbstractProvider
         ]);
     }
 
+    protected function getCodeFields($state = null)
+    {
+        $fields = array_filter([
+            'client_id' => $this->clientId,
+            'redirect_uri' => $this->redirectUrl,
+            'scope' => $this->formatScopes($this->getScopes(), $this->scopeSeparator),
+            'response_type' => 'code',
+        ]);
+
+        if ($this->usesState()) {
+            $fields['state'] = $state;
+        }
+
+        return array_merge($fields, $this->parameters);
+    }
+
     /**
      * {@inheritdoc}
      */
